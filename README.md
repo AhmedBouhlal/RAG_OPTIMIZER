@@ -1,12 +1,15 @@
+
 ```markdown
 # RAG Hyperparameter Optimization System
 
-A **Research-Ready Retrieval-Augmented Generation (RAG) system** with **automatic hyperparameter optimization**, multi-document support, and interactive query capability.  
+A **Research-Ready Retrieval-Augmented Generation (RAG) system** with **automatic hyperparameter optimization**, multi-document support, hybrid retrieval, and cross-encoder reranking.  
 
 This project allows you to:
 
 - Automatically search for the best RAG hyperparameters (`chunk_size`, `chunk_overlap`, `top_k`, `embedding_model`)  
 - Build vector indexes and embeddings from multiple documents  
+- Perform **hybrid retrieval** (semantic + BM25 keyword search)  
+- **Rerank top chunks** using a Cross-Encoder model for improved relevance  
 - Retrieve relevant chunks for user queries  
 - Generate answers using GPT (OpenAI API or local LLMs)  
 - Visualize experiment results  
@@ -21,7 +24,7 @@ This project allows you to:
 3. [Documents & Evaluation Dataset](#documents--evaluation-dataset)  
 4. [Running Experiments](#running-experiments)  
 5. [Generating Best Config Summary](#generating-best-config-summary)  
-6. [Interactive RAG CLI](#interactive-rag-cli)  
+6. [Interactive Hybrid RAG CLI](#interactive-hybrid-rag-cli)  
 7. [Visualization](#visualization)  
 8. [API Key Management](#api-key-management)  
 9. [Bash Automation Script](#bash-automation-script)  
@@ -36,9 +39,9 @@ This project allows you to:
 rag_optimizer/
 ├── best_config_summary.py      # Generate best hyperparameter config JSON
 ├── data/
-│   ├── documents/             # Source documents (.txt)
+│   ├── documents/             # Source documents (TXT, PDF, DOCX, HTML, CSV, Markdown)
 │   └── evaluation/            # Question/answer evaluation dataset
-├── rag_cli.py                 # Interactive RAG CLI for queries
+├── rag_cli.py                 # Interactive Hybrid RAG CLI with reranker
 ├── run_experiments.py         # Runs hyperparameter experiments in parallel
 ├── secret_key.json            # OpenAI API key (ignored in Git)
 ├── src/
@@ -46,9 +49,11 @@ rag_optimizer/
 │   ├── embedding.py           # Generates embeddings (sentence-transformers)
 │   ├── evaluation.py          # Evaluates retrieval results
 │   ├── experiment.py          # Runs a single experiment
-│   ├── loader.py              # Loads documents
+│   ├── loader.py              # Loads documents (multi-format)
 │   ├── retrieval.py           # Retrieves top-k chunks from index
-│   └── vectordb.py            # Builds vector index
+│   ├── vectordb.py            # Builds vector index
+│   ├── hybrid_retrieval.py    # Combines semantic + BM25 search
+│   └── reranker.py            # Cross-Encoder reranker for top chunks
 ├── visualize_results.py       # Plots experiment results
 ├── run_all.sh                 # Full pipeline automation
 ├── README.md
@@ -84,7 +89,12 @@ pip install -r requirements.txt
 # - sentence-transformers
 # - transformers
 # - torch
+# - pdfplumber
+# - python-docx
+# - beautifulsoup4
+# - pandas
 # - matplotlib
+# - rank_bm25
 ```
 
 4. **Prepare documents**:
@@ -92,16 +102,17 @@ pip install -r requirements.txt
 Place files in `data/documents/`. Each file will be assigned a `doc_id`.
 
 Supported document formats:
-- TXT
-- PDF
-- DOCX
-- HTML
-- CSV
-- Markdown
+
+* TXT
+* PDF
+* DOCX
+* HTML
+* CSV
+* Markdown
 
 5. **Prepare evaluation dataset**:
 
-* Store question/answer pairs in `data/evaluation/` (JSON or CSV).
+* Store question/answer pairs in `data/evaluation/` (JSON or CSV)
 * Used to calculate retrieval scores during experiments.
 
 ---
@@ -114,6 +125,7 @@ Supported document formats:
 {
   "doc_id": "doc_001",
   "file_name": "alice.txt",
+  "source": "txt",
   "text": "Alice saw the White Rabbit..."
 }
 ```
@@ -198,7 +210,7 @@ python best_config_summary.py
 
 ---
 
-## **Interactive RAG CLI**
+## **Interactive Hybrid RAG CLI**
 
 * Launch CLI:
 
@@ -216,8 +228,9 @@ Query: exit
 
 * Features:
 
-  * Retrieves top-k chunks using best config
-  * Sends chunks to GPT for answer generation
+  * Retrieves top-k chunks using **hybrid retrieval** (semantic + BM25)
+  * **Cross-Encoder reranks** top chunks for improved relevance
+  * Sends reranked chunks to GPT for answer generation
   * Fully modular, dictionary/JSON-based
 
 ---
@@ -235,6 +248,7 @@ python visualize_results.py
   * Chunk size vs retrieval score
   * Overlap vs retrieval score
   * Heatmaps for hyperparameter interactions
+  * Compare semantic, BM25, and hybrid scores
 
 ---
 
@@ -269,26 +283,28 @@ chmod +x run_all.sh
   3. Run experiments in parallel
   4. Generate best config summary
   5. Optionally visualize results
-  6. Launch interactive RAG CLI
+  6. Launch interactive Hybrid RAG CLI
 
 ---
 
 ## **File Descriptions**
 
-| File                     | Purpose                                                     |
-| ------------------------ | ----------------------------------------------------------- |
-| `src/loader.py`          | Load documents into structured dictionaries                 |
-| `src/chunking.py`        | Split documents into chunks with `chunk_size` and `overlap` |
-| `src/embedding.py`       | Generate embeddings for chunks                              |
-| `src/vectordb.py`        | Build vector index for retrieval                            |
-| `src/retrieval.py`       | Retrieve top-k chunks for queries                           |
-| `src/evaluation.py`      | Score retrieval using evaluation dataset                    |
-| `src/experiment.py`      | Run single experiment and return JSON results               |
-| `run_experiments.py`     | Runs all hyperparameter experiments in parallel             |
-| `best_config_summary.py` | Reads all experiment JSONs and finds the best config        |
-| `rag_cli.py`             | Interactive RAG query interface                             |
-| `visualize_results.py`   | Plots experiment results                                    |
-| `secret_key.json`        | Stores OpenAI API key (ignored in Git)                      |
+| File                      | Purpose                                                     |
+| ------------------------- | ----------------------------------------------------------- |
+| `src/loader.py`           | Load documents into structured dictionaries (multi-format)  |
+| `src/chunking.py`         | Split documents into chunks with `chunk_size` and `overlap` |
+| `src/embedding.py`        | Generate embeddings for chunks                              |
+| `src/vectordb.py`         | Build vector index for retrieval                            |
+| `src/retrieval.py`        | Retrieve top-k chunks for queries                           |
+| `src/hybrid_retrieval.py` | Combine semantic + BM25 retrieval                           |
+| `src/reranker.py`         | Cross-Encoder reranker for top chunks                       |
+| `src/evaluation.py`       | Score retrieval using evaluation dataset                    |
+| `src/experiment.py`       | Run single experiment and return JSON results               |
+| `run_experiments.py`      | Runs all hyperparameter experiments in parallel             |
+| `best_config_summary.py`  | Reads all experiment JSONs and finds the best config        |
+| `rag_cli.py`              | Interactive Hybrid RAG query interface                      |
+| `visualize_results.py`    | Plots experiment results                                    |
+| `secret_key.json`         | Stores OpenAI API key (ignored in Git)                      |
 
 ---
 
@@ -299,9 +315,14 @@ chmod +x run_all.sh
 * Truncate long chunks for GPT to avoid token limits
 * Keep `data/evaluation/` updated for accurate experiment scoring
 * Modular dictionary/JSON design allows easy replacement of GPT with **local LLMs**
+* Hybrid retrieval + reranker provides **much higher relevance** than plain semantic search
 
 ---
 
+<<<<<<< HEAD
 > By following this guide, you can run the **entire RAG system from scratch**, explore hyperparameter space, and interactively query your documents using GPT.
 
 
+=======
+> By following this guide, you can run the **entire Hybrid RAG system from scratch**, explore hyperparameter space, and interactively query your documents using GPT.
+>>>>>>> 1a2ff0d (Editing readme)

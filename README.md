@@ -32,7 +32,6 @@ This project allows you to:
 
 ## **Project Structure**
 
-```
 
 rag_optimizer/
 ├── best_config_summary.py      # Generate best hyperparameter config JSON
@@ -52,7 +51,7 @@ rag_optimizer/
 │   └── vectordb.py            # Builds vector index
 ├── visualize_results.py       # Plots experiment results
 ├── run_all.sh                 # Full pipeline automation
-└── README.md
+├── README.md
 └── requirements.txt
 
 ````

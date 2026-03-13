@@ -296,5 +296,4 @@ chmod +x run_all.sh
 
 > By following this guide, you can run the **entire RAG system from scratch**, explore hyperparameter space, and interactively query your documents using GPT.
 
-```
 

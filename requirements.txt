@@ -1,0 +1,21 @@
+# Core
+numpy
+pandas
+json5
+
+# Embeddings & LLM
+sentence-transformers
+transformers
+torch
+accelerate
+
+# OpenAI API
+openai
+
+# Utilities
+tqdm
+matplotlib
+scikit-learn
+
+# Optional
+faiss-cpu

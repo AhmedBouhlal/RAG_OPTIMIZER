@@ -9,28 +9,32 @@ from src.reranker import Reranker
 
 import json
 import os
-import openai
+from openai import OpenAI
 
 # -----------------------------
 # Load OpenAI API Key
 # -----------------------------
-with open("secret_key.json", "r") as f:
-    secrets = json.load(f)
-
-os.environ["OPENAI_API_KEY"] = secrets["OPENAI_API_KEY"]
+try:
+    with open("secret_key.json", "r") as f:
+        secrets = json.load(f)
+    os.environ["OPENAI_API_KEY"] = secrets["OPENAI_API_KEY"]
+except FileNotFoundError:
+    raise RuntimeError("secret_key.json not found! Please create it with your OpenAI API key.")
 
 # -----------------------------
 # Load Documents
 # -----------------------------
-docs = load_documents({"data_dir": "data/documents"})["documents"]
+docs = load_documents({"data_dir": "data/documents"}).get("documents", [])
+if not docs:
+    raise RuntimeError("No documents found in data/documents folder!")
 
 # -----------------------------
 # Load Best RAG Configuration
 # -----------------------------
-summary = get_best_config("results")
-best_config = summary["best_config"]
+with open("results/summary.json", "r", encoding="utf-8") as f:
+    summary = json.load(f)
 
-print("Using best config:", best_config)
+best_config = summary["best_config"]
 
 # -----------------------------
 # Chunk Documents
@@ -75,8 +79,9 @@ reranker = Reranker()  # default model: "BAAI/bge-reranker-base"
 # GPT Generation
 # -----------------------------
 def rag_generate(query, retrieval_results):
-
-    context = "\n\n".join([r["text"] for r in retrieval_results["results"]])
+    context = "\n\n".join([r.get("text", "") for r in retrieval_results.get("results", [])])
+    if not context:
+        return "No relevant context found to answer this query."
 
     prompt = f"""
 Answer the question based ONLY on the context.
@@ -88,15 +93,16 @@ Question: {query}
 
 Answer:
 """
-
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0
-    )
-
-    return response["choices"][0]["message"]["content"]
-
+    try:
+        client = OpenAI()
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        return f"Error generating answer: {e}"
 
 # -----------------------------
 # Interactive CLI
@@ -105,34 +111,32 @@ print("\n=== Hybrid RAG Interactive CLI ===")
 print("Type 'exit' to quit.\n")
 
 while True:
-
-    query = input("Query: ")
-
+    query = input("Query: ").strip()
     if query.lower() in ["exit", "quit"]:
         break
+    if not query:
+        continue
 
+    # Hybrid retrieval (vector + BM25)
     retrieval = hybrid_retrieve({
-    "query": query,
-    "config": best_config,
-    "index": index_dict["index"],
-    "chunks": index_dict["chunks"],
-    "bm25": bm25_index["bm25"]
-})
+        "query": query,
+        "config": best_config,
+        "index": index_dict["index"],
+        "chunks": index_dict["chunks"],
+        "bm25": bm25_index["bm25"]
+    })
 
-    # take top 20 for reranking
-    candidate_chunks = retrieval["results"][:20]
-
+    # Take top 20 for reranking
+    candidate_chunks = retrieval.get("results", [])[:20]
     reranked = reranker.rerank(query, candidate_chunks, top_k=best_config["top_k"])
-
-    retrieval = {"results": reranked}
+    retrieval["results"] = reranked
 
     print("\nTop Retrieved Chunks:")
+    for r in reranked:
+        print(f"{r.get('chunk_id','N/A')} | score={r.get('score',0):.4f}")
 
-    for r in retrieval["results"]:
-        print(f"{r['chunk_id']} | score={r['score']:.4f}")
-
+    # Generate answer
     answer = rag_generate(query, retrieval)
-
     print("\nGenerated Answer:")
     print(answer)
     print("\n" + "-"*50 + "\n")

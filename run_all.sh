@@ -12,8 +12,7 @@ source venv/bin/activate  # <-- adjust if your venv is elsewhere
 echo "Loading OpenAI API key from secret_key.json..."
 export OPENAI_API_KEY=$(python -c "import json; print(json.load(open('secret_key.json'))['OPENAI_API_KEY'])")
 
-# 3️⃣ Create results and cache folders
-mkdir -p results cache
+rm -rf results/* -y
 
 # 4️⃣ Run hyperparameter experiments
 echo "Running hyperparameter experiments..."

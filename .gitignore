@@ -23,6 +23,7 @@ Thumbs.db
 
 # Secrets
 secret_key.json
+hf_token.json
 
 # Cache / outputs
 cache/

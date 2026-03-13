@@ -12,22 +12,28 @@ def evaluate_retrieval(input_dict):
 
         # Find corresponding ground-truth
         gt = next((g for g in ground_truths if g["query"] == query), None)
-
         if gt is None:
             continue
 
-        answer = gt["answer"]
+        # Ensure answers is a list
+        answers = gt.get("answer", [])
+        if not isinstance(answers, list):
+            answers = [answers]
 
-        # Simple scoring: 1 if any chunk contains answer, else 0
+        # Simple scoring: 1 if any chunk contains any valid answer, else 0
         score = 0.0
         for r in results:
-            if answer.lower() in r["text"].lower():
-                score = 1.0
+            r_text = r["text"].lower()
+            for ans in answers:
+                if ans.lower() in r_text:
+                    score = 1.0
+                    break
+            if score == 1.0:
                 break
 
         eval_dict = {
             "query": query,
-            "ground_truth": answer,
+            "ground_truth": answers,
             "results": results,
             "retrieval_score": score
         }

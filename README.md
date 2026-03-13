@@ -89,7 +89,15 @@ pip install -r requirements.txt
 
 4. **Prepare documents**:
 
-Place `.txt` files in `data/documents/`. Each file will be assigned a `doc_id`.
+Place files in `data/documents/`. Each file will be assigned a `doc_id`.
+
+Supported document formats:
+- TXT
+- PDF
+- DOCX
+- HTML
+- CSV
+- Markdown
 
 5. **Prepare evaluation dataset**:
 

@@ -39,6 +39,41 @@ def load_json(path):
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
+def json_to_text(data):
+    """Convert JSON data to readable text format for RAG processing"""
+    if isinstance(data, list):
+        texts = []
+        for i, item in enumerate(data):
+            if isinstance(item, dict):
+                text = f"Item {i+1}:\n"
+                for key, value in item.items():
+                    if isinstance(value, list):
+                        text += f"  {key}: {', '.join(map(str, value))}\n"
+                    elif isinstance(value, dict):
+                        text += f"  {key}:\n"
+                        for subkey, subvalue in value.items():
+                            text += f"    {subkey}: {subvalue}\n"
+                    else:
+                        text += f"  {key}: {value}\n"
+                texts.append(text)
+            else:
+                texts.append(f"Item {i+1}: {str(item)}")
+        return "\n".join(texts)
+    elif isinstance(data, dict):
+        text = ""
+        for key, value in data.items():
+            if isinstance(value, list):
+                text += f"{key}: {', '.join(map(str, value))}\n"
+            elif isinstance(value, dict):
+                text += f"{key}:\n"
+                for subkey, subvalue in value.items():
+                    text += f"  {subkey}: {subvalue}\n"
+            else:
+                text += f"{key}: {value}\n"
+        return text
+    else:
+        return str(data)
+
 # -----------------------------
 # Load all documents from folder
 # -----------------------------
@@ -63,8 +98,8 @@ def load_documents(input_dict):
         elif ext == "csv":
             text = load_csv(path)
         elif ext == "json":
-            # JSON files are handled separately (for evaluation)
-            continue
+            json_data = load_json(path)
+            text = json_to_text(json_data)
         else:
             continue
 

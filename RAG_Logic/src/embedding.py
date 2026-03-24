@@ -1,4 +1,5 @@
 from sentence_transformers import SentenceTransformer
+import torch
 
 
 def generate_embeddings(input_dict):
@@ -8,11 +9,16 @@ def generate_embeddings(input_dict):
 
     model_name = config["embedding_model"]
 
+    # Check for CUDA availability and use it if available
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    print(f"🔥 Using device: {device}")
+
     model = SentenceTransformer(model_name)
+    model = model.to(device)
 
     texts = [chunk["text"] for chunk in chunks]
 
-    vectors = model.encode(texts)
+    vectors = model.encode(texts, device=device)
 
     embeddings = []
 

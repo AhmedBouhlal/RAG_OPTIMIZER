@@ -1,0 +1,42 @@
+[
+  {
+    "query": "What are the main components of a RAG system?",
+    "answer": ["retrieval", "generation", "documents", "embeddings", "vector database"]
+  },
+  {
+    "query": "How does chunking help with document processing?",
+    "answer": ["splitting", "context", "retrieval", "processing", "segments"]
+  },
+  {
+    "query": "What is the purpose of embeddings in RAG?",
+    "answer": ["semantic search", "vectors", "similarity", "neural networks", "meaning"]
+  },
+  {
+    "query": "Why is hybrid retrieval better than single method?",
+    "answer": ["vector search", "keyword search", "complementary", "accuracy", "recall"]
+  },
+  {
+    "query": "How does reranking improve results?",
+    "answer": ["relevance", "ordering", "quality", "cross-encoder", "precision"]
+  },
+  {
+    "query": "What makes a RAG system universal?",
+    "answer": ["domain agnostic", "flexible", "configurable", "any documents", "general purpose"]
+  },
+  {
+    "query": "What are the benefits of caching in RAG?",
+    "answer": ["performance", "speed", "efficiency", "repeated queries", "optimization"]
+  },
+  {
+    "query": "How does BM25 keyword search work?",
+    "answer": ["term frequency", "inverse document frequency", "keywords", "matching", "scoring"]
+  },
+  {
+    "query": "What is cosine similarity used for?",
+    "answer": ["vector similarity", "angle", "direction", "embedding comparison", "search"]
+  },
+  {
+    "query": "Why is configuration important for RAG?",
+    "answer": ["optimization", "tuning", "performance", "accuracy", "parameters"]
+  }
+]

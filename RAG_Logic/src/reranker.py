@@ -1,10 +1,15 @@
 from sentence_transformers import CrossEncoder
+import torch
 
 
 class Reranker:
 
     def __init__(self, model_name="BAAI/bge-reranker-base"):
-        self.model = CrossEncoder(model_name)
+        # Check for CUDA availability and use it if available
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        print(f"🎯 Reranker using device: {device}")
+
+        self.model = CrossEncoder(model_name, device=device)
 
     def rerank(self, query, chunks, top_k=5):
 

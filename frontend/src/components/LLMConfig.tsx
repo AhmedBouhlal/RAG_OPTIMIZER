@@ -137,10 +137,10 @@ export const LLMConfig: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* LLM Configuration */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-          <Cpu className="w-5 h-5 mr-2" />
-          LLM Configuration
+      <div className="futuristic-card p-8">
+        <h3 className="text-2xl font-bold text-futuristic mb-6 flex items-center">
+          <Cpu className="w-6 h-6 mr-3 text-cyan-400" />
+          Neural Core Configuration
         </h3>
 
         {/* Provider Selection */}
@@ -428,11 +428,11 @@ export const LLMConfig: React.FC = () => {
         <button
           onClick={testConnection}
           disabled={testingConnection}
-          className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 flex items-center"
+          className="futuristic-btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {testingConnection ? (
             <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              <Loader2 className="w-5 h-5 mr-2 futuristic-spinner" />
               Testing...
             </>
           ) : (
@@ -442,17 +442,17 @@ export const LLMConfig: React.FC = () => {
 
         <button
           onClick={loadBestConfig}
-          className="bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 flex items-center"
+          className="futuristic-btn-secondary"
         >
-          <BarChart3 className="w-4 h-4 mr-2" />
+          <BarChart3 className="w-5 h-5 mr-2" />
           Load Best Config
         </button>
 
         <button
           onClick={saveConfig}
-          className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 flex items-center"
+          className="futuristic-btn-success"
         >
-          <Settings className="w-4 h-4 mr-2" />
+          <Settings className="w-5 h-5 mr-2" />
           Save Configuration
         </button>
       </div>
@@ -460,8 +460,8 @@ export const LLMConfig: React.FC = () => {
       {/* Status Messages */}
       {connectionStatus !== 'idle' && (
         <div className={`p-4 rounded-lg flex items-center space-x-2 ${
-          connectionStatus === 'success' ? 'bg-green-50 text-green-800' :
-          'bg-red-50 text-red-800'
+          connectionStatus === 'success' ? 'futuristic-success' :
+          'futuristic-error'
         }`}>
           {connectionStatus === 'success' ? <CheckCircle className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
           <span>{connectionMessage}</span>

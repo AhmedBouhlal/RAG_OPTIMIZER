@@ -54,64 +54,60 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 flex" style={{background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'}}>
       {/* Sidebar */}
-      <div className={`${sidebarOpen ? 'w-64' : 'w-16'} bg-white shadow-lg transition-all duration-300 flex flex-col`}>
-        <div className="p-4 border-b border-gray-200">
+      <div className={`${sidebarOpen ? 'w-72' : 'w-20'} futuristic-sidebar transition-all duration-500 flex flex-col`}>
+        <div className="p-6 border-b border-cyan-500/20">
           <div className="flex items-center justify-between">
             {sidebarOpen && (
-              <h1 className="text-xl font-bold text-gray-800">RAG System</h1>
+              <h1 className="text-2xl font-bold text-futuristic">RAG SYSTEM</h1>
             )}
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              className="p-3 rounded-lg hover:bg-gray-800/50 transition-all duration-300 text-cyan-400 hover:text-cyan-300"
             >
               {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
-        <nav className="flex-1 p-4">
-          <ul className="space-y-2">
-            {tabs.map((tab) => {
-              const Icon = tab.icon;
-              return (
-                <li key={tab.id}>
-                  <button
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`w-full flex items-center px-3 py-2 rounded-lg transition-colors ${
-                      activeTab === tab.id
-                        ? getActiveTabColor(tab.color)
-                        : getTabColor(tab.color)
-                    }`}
-                  >
-                    <Icon className="w-5 h-5" />
-                    {sidebarOpen && <span className="ml-3">{tab.label}</span>}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
+        <nav className="flex-1 p-4 space-y-2">
+          {tabs.map((tab) => {
+            const Icon = tab.icon;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`w-full flex items-center futuristic-tab transition-all duration-300 ${
+                  activeTab === tab.id ? 'futuristic-tab-active' : ''
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+                {sidebarOpen && <span className="ml-3 font-medium">{tab.label}</span>}
+              </button>
+            );
+          })}
         </nav>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        <header className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+      <div className="flex-1 flex flex-col" style={{backgroundColor: 'transparent'}}>
+        <header className="futuristic-header px-8 py-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-semibold text-gray-800">
+            <h2 className="text-3xl font-bold text-futuristic">
               {tabs.find(tab => tab.id === activeTab)?.label}
             </h2>
-            <div className="text-sm text-gray-500">
-              RAG System Dashboard
+            <div className="flex items-center space-x-2">
+              <div className="futuristic-badge animate-pulse-glow">ONLINE</div>
+              <div className="text-sm text-gray-400">RAG Neural Interface</div>
             </div>
           </div>
         </header>
 
-        <main className="flex-1 p-6 overflow-auto">
+        <main className="flex-1 p-8 overflow-auto" style={{backgroundColor: 'transparent'}}>
           <div className="max-w-7xl mx-auto">
             {activeTab === 'query' && (
-              <div className="space-y-6">
+              <div className="space-y-8">
                 <QueryInterface onResponse={setQueryResponse} />
                 <QueryResponseDisplay response={queryResponse} />
               </div>

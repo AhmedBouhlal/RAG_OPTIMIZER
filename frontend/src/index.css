@@ -2,26 +2,444 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #f8fafc;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+  min-height: 100vh;
+  color: #f3f4f6;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+html {
+  scroll-behavior: smooth;
 }
 
-.loading-spinner {
+/* Global styles to remove white backgrounds */
+* {
+  background-color: transparent !important;
+}
+
+/* Override any potential white backgrounds */
+.bg-white {
+  background-color: #1f2937 !important;
+}
+
+.text-gray-800 {
+  color: #f3f4f6 !important;
+}
+
+.text-gray-700 {
+  color: #d1d5db !important;
+}
+
+.text-gray-600 {
+  color: #9ca3af !important;
+}
+
+.text-gray-500 {
+  color: #6b7280 !important;
+}
+
+.border-gray-200 {
+  border-color: rgba(6, 182, 212, 0.2) !important;
+}
+
+.border-gray-300 {
+  border-color: rgba(6, 182, 212, 0.3) !important;
+}
+
+/* Additional overrides for common white backgrounds */
+.shadow-lg {
+  box-shadow:
+    0 0 20px rgba(6, 182, 212, 0.1),
+    0 0 40px rgba(6, 182, 212, 0.05) !important;
+}
+
+.shadow-md {
+  box-shadow:
+    0 0 15px rgba(6, 182, 212, 0.1),
+    0 0 30px rgba(6, 182, 212, 0.05) !important;
+}
+
+/* Override any remaining white/gray backgrounds */
+.bg-gray-50 {
+  background-color: #111827 !important;
+}
+
+.bg-gray-100 {
+  background-color: #1f2937 !important;
+}
+
+.bg-gray-200 {
+  background-color: #374151 !important;
+}
+
+.bg-gray-300 {
+  background-color: #4b5563 !important;
+}
+
+/* Ensure all form elements are dark */
+input, textarea, select {
+  background-color: rgba(31, 41, 55, 0.8) !important;
+  color: #f3f4f6 !important;
+  border-color: rgba(6, 182, 212, 0.3) !important;
+}
+
+input:focus, textarea:focus, select:focus {
+  background-color: rgba(31, 41, 55, 0.9) !important;
+  border-color: rgba(6, 182, 212, 0.6) !important;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.3) !important;
+}
+
+/* Override any white backgrounds in buttons */
+button {
+  background-color: transparent !important;
+}
+
+/* Override any white backgrounds in divs and spans */
+div, span, p, h1, h2, h3, h4, h5, h6 {
+  background-color: transparent !important;
+}
+
+/* Futuristic Card Styles */
+.futuristic-card {
+  background: linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.8) 100%);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  border-radius: 0.75rem;
+  box-shadow:
+    0 0 20px rgba(6, 182, 212, 0.1),
+    0 0 40px rgba(6, 182, 212, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+}
+
+.futuristic-card:hover {
+  border-color: rgba(6, 182, 212, 0.4);
+  box-shadow:
+    0 0 30px rgba(6, 182, 212, 0.2),
+    0 0 60px rgba(6, 182, 212, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Futuristic Button Styles */
+.futuristic-btn-primary {
+  background: linear-gradient(135deg, #0891b2 0%, #0284c7 50%, #0369a1 100%);
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  box-shadow:
+    0 0 20px rgba(6, 182, 212, 0.3),
+    0 4px 15px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.futuristic-btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 50%, #0284c7 100%);
+  box-shadow:
+    0 0 30px rgba(6, 182, 212, 0.5),
+    0 6px 20px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.futuristic-btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.futuristic-btn-secondary {
+  background: linear-gradient(135deg, #9333ea 0%, #ec4899 50%, #db2777 100%);
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  box-shadow:
+    0 0 20px rgba(147, 51, 234, 0.3),
+    0 4px 15px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.futuristic-btn-secondary:hover {
+  background: linear-gradient(135deg, #a855f7 0%, #f472b6 50%, #ec4899 100%);
+  box-shadow:
+    0 0 30px rgba(147, 51, 234, 0.5),
+    0 6px 20px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.futuristic-btn-success {
+  background: linear-gradient(135deg, #059669 0%, #10b981 50%, #059669 100%);
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  box-shadow:
+    0 0 20px rgba(16, 185, 129, 0.3),
+    0 4px 15px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.futuristic-btn-success:hover {
+  background: linear-gradient(135deg, #10b981 0%, #34d399 50%, #10b981 100%);
+  box-shadow:
+    0 0 30px rgba(16, 185, 129, 0.5),
+    0 6px 20px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Futuristic Input Styles */
+.futuristic-input {
+  background: linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.9) 100%);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-radius: 0.5rem;
+  color: #f3f4f6;
+  padding: 0.75rem 1rem;
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 0 10px rgba(6, 182, 212, 0.1);
+  transition: all 0.3s ease;
+}
+
+.futuristic-input:focus {
+  border-color: rgba(6, 182, 212, 0.6);
+  background: rgba(31, 41, 55, 0.7);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(6, 182, 212, 0.3),
+    0 0 40px rgba(6, 182, 212, 0.1);
+  outline: none;
+}
+
+.futuristic-textarea {
+  resize: none;
+  min-height: 120px;
+}
+
+/* Futuristic Slider */
+.futuristic-slider {
+  width: 100%;
+  height: 0.5rem;
+  background: linear-gradient(90deg, #0891b2 0%, #0284c7 50%, #0369a1 100%);
+  border-radius: 0.5rem;
+  appearance: none;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+}
+
+.futuristic-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow:
+    0 0 20px rgba(6, 182, 212, 0.5),
+    0 2px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.futuristic-slider::-webkit-slider-thumb:hover {
+  box-shadow:
+    0 0 30px rgba(6, 182, 212, 0.7),
+    0 2px 15px rgba(0, 0, 0, 0.4);
+  transform: scale(1.1);
+}
+
+/* Futuristic Sidebar */
+.futuristic-sidebar {
+  background: linear-gradient(180deg, rgba(17, 24, 39, 0.95) 0%, rgba(31, 41, 55, 0.9) 100%);
+  backdrop-filter: blur(16px);
+  border-right: 1px solid rgba(6, 182, 212, 0.2);
+  box-shadow:
+    0 0 30px rgba(6, 182, 212, 0.1),
+    inset 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Futuristic Tab */
+.futuristic-tab {
+  color: #d1d5db;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.futuristic-tab:hover {
+  color: #06b6d4;
+  background: rgba(31, 41, 55, 0.5);
+}
+
+.futuristic-tab::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.futuristic-tab:hover::before {
+  left: 100%;
+}
+
+.futuristic-tab-active {
+  color: #06b6d4;
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
+  border-color: rgba(6, 182, 212, 0.5);
+  box-shadow:
+    0 0 20px rgba(6, 182, 212, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Futuristic Header */
+.futuristic-header {
+  background: linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.8) 100%);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Futuristic Status Messages */
+.futuristic-success {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.3) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #86efac;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow:
+    0 0 20px rgba(16, 185, 129, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.futuristic-error {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.3) 100%);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow:
+    0 0 20px rgba(239, 68, 68, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.futuristic-warning {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(217, 119, 6, 0.3) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #fcd34d;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow:
+    0 0 20px rgba(245, 158, 11, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Futuristic Loading Spinner */
+.futuristic-spinner {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 3px solid rgba(6, 182, 212, 0.3);
+  border-top: 3px solid #06b6d4;
+  border-radius: 50%;
   animation: spin 1s linear infinite;
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
 }
 
+/* Futuristic Badge */
+.futuristic-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(59, 130, 246, 0.3) 100%);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
+  color: #06b6d4;
+}
+
+/* Futuristic Text */
+.text-futuristic {
+  font-family: 'Orbitron', monospace;
+  background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-futuristic-secondary {
+  font-family: 'Orbitron', monospace;
+  background: linear-gradient(135deg, #ec4899 0%, #f43f5e 50%, #f97316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glow Effects */
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+}
+
+.glow-purple {
+  box-shadow: 0 0 20px rgba(147, 51, 234, 0.5);
+}
+
+.glow-green {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+}
+
+/* Animations */
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.5); }
+  50% { box-shadow: 0 0 30px rgba(6, 182, 212, 0.8); }
+}
+
+.animate-pulse-glow {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
 }

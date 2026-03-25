@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Loader2, FileText, BarChart3 } from 'lucide-react';
+import { Send, Loader2, XCircle } from 'lucide-react';
 import { apiService } from '../services/api';
 import { QueryResponse } from '../types';
 
@@ -18,59 +18,60 @@ export const QueryInterface: React.FC<QueryInterfaceProps> = ({ onResponse }) =>
 
     setLoading(true);
     setError(null);
-    
+
     try {
       const response = await apiService.queryRAG({ query });
       onResponse(response);
       setQuery('');
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'An error occurred while querying the RAG system');
+      setError(err.message || 'Failed to process query');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <div className="flex items-center mb-4">
-        <Search className="w-6 h-6 text-blue-600 mr-2" />
-        <h2 className="text-xl font-semibold text-gray-800">Query RAG System</h2>
-      </div>
-      
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="futuristic-card p-8">
+      <h3 className="text-2xl font-bold text-futuristic mb-6">Neural Query Interface</h3>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div>
+          <label className="block text-sm font-medium text-cyan-400 mb-2">
+            Enter your query
+          </label>
           <textarea
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Enter your question about the documents..."
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+            placeholder="Ask me anything about the documents..."
+            className="futuristic-textarea w-full"
             rows={4}
             disabled={loading}
           />
         </div>
-        
+
         <button
           type="submit"
-          disabled={!query.trim() || loading}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
+          disabled={loading || !query.trim()}
+          className="futuristic-btn-primary w-full py-4 text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? (
             <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              <Loader2 className="w-5 h-5 mr-2 futuristic-spinner" />
               Processing...
             </>
           ) : (
             <>
-              <Search className="w-4 h-4 mr-2" />
-              Submit Query
+              <Send className="w-5 h-5 mr-2" />
+              Transmit Query
             </>
           )}
         </button>
       </form>
 
       {error && (
-        <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700">
-          {error}
+        <div className="futuristic-error p-4 rounded-lg flex items-center space-x-2 mt-4">
+          <XCircle className="w-5 h-5" />
+          <span>{error}</span>
         </div>
       )}
     </div>

@@ -31,3 +31,4 @@ results/
 hf_token.json
 # Logs
 *.log
+node_modules/

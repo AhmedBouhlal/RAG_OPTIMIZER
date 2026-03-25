@@ -297,8 +297,12 @@ class OptimizedRAGSystem:
             # Load documents
             docs = load_documents({"data_dir": config.data_dir}).get("documents", [])
             if not docs:
-                logger.error("❌ No documents found!")
-                return False
+                logger.warning("⚠️ No documents found! System will run in empty mode.")
+                self.documents = []
+                self.chunks = []
+                self._initialized = True
+                logger.info("✅ RAG System initialized (empty mode)")
+                return True
 
             self.documents = docs
             logger.info(f"✅ Loaded {len(docs)} documents")
@@ -450,6 +454,25 @@ Answer:
     async def process_query(self, query: str) -> Dict[str, Any]:
         """Main method to process a query"""
         logger.info(f"🔍 Processing query: {query}")
+
+        # Handle empty mode - no documents loaded
+        if not self.documents:
+            return {
+                "query": query,
+                "timestamp": datetime.now().isoformat(),
+                "rag_analysis": {
+                    "retrieved_chunks_count": 0,
+                    "top_chunks": [],
+                    "retrieval_method": "empty_mode",
+                    "semantic_count": 0,
+                    "keyword_count": 0,
+                    "reranked_count": 0,
+                    "message": "No documents loaded - please upload documents first"
+                },
+                "answer": "I don't have access to any documents yet. Please upload some documents to the system first, and then I can help you find information.",
+                "confidence_score": 0.0,
+                "source_documents": []
+            }
 
         # Step 1: Retrieve relevant information
         retrieval_results = await self.retrieve_relevant_info(query)

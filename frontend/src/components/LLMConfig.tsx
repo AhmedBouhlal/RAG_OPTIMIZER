@@ -23,7 +23,7 @@ interface RAGConfig {
 export const LLMConfig: React.FC = () => {
   const [llmConfig, setLLMConfig] = useState<LLMConfig>({
     provider: 'local',
-    model: 'llama2-7b',
+    model: 'llama3',
     temperature: 0.7,
     maxTokens: 2048,
     topP: 0.9,
@@ -45,6 +45,7 @@ export const LLMConfig: React.FC = () => {
   const [connectionMessage, setConnectionMessage] = useState('');
 
   const localModels = [
+    'llama3',
     'llama2-7b',
     'llama2-13b',
     'llama2-70b',

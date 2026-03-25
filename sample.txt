@@ -1,0 +1,23 @@
+RAG System Sample Document
+
+This is a sample document for testing the RAG system with image extraction capabilities.
+
+The RAG (Retrieval-Augmented Generation) system is designed to process various document types including:
+- Text files (.txt)
+- PDF documents (.pdf) 
+- Word documents (.docx)
+- HTML files (.html)
+- CSV files (.csv)
+- JSON files (.json)
+
+Key Features:
+1. Image extraction from PDFs using OCR
+2. Text chunking with configurable overlap
+3. Vector embeddings for semantic search
+4. Hybrid retrieval combining vector and keyword search
+5. Reranking for improved relevance
+
+This document should be processed by the loader, chunked into smaller pieces, and embedded for retrieval testing.
+
+Sample query: "What is RAG and how does it work?"
+Expected answer: Information about RAG system capabilities and architecture.

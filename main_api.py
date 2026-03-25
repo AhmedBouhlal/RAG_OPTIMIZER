@@ -256,7 +256,7 @@ async def test_llm_connection(request: Dict[str, Any]):
     """Test LLM connection"""
     try:
         provider = request.get("provider", "local")
-        model = request.get("model", "llama2-7b")
+        model = request.get("model", "llama3")
 
         if provider == "openai":
             api_key = request.get("openaiApiKey")
@@ -380,7 +380,7 @@ async def load_best_config():
                 "rag_config": rag_config,
                 "llm_config": {
                     "provider": "local",
-                    "model": "llama2-7b",
+                    "model": "llama3",
                     "temperature": 0.7,
                     "maxTokens": 2048,
                     "topP": 0.9
@@ -399,7 +399,7 @@ async def load_best_config():
                 },
                 "llm_config": {
                     "provider": "local",
-                    "model": "llama2-7b",
+                    "model": "llama3",
                     "temperature": 0.7,
                     "maxTokens": 2048,
                     "topP": 0.9

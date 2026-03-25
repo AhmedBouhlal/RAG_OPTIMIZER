@@ -100,20 +100,20 @@ export const ExperimentManager: React.FC = () => {
                 <option value="comprehensive">Comprehensive (Full)</option>
               </select>
             </div>
-            
+
             <button
               onClick={startExperiment}
               disabled={loading}
-              className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
+              className="futuristic-btn-secondary w-full py-3 text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Starting...
+                  <Loader2 className="w-5 h-5 mr-2 futuristic-spinner" />
+                  Initializing...
                 </>
               ) : (
                 <>
-                  <Play className="w-4 h-4 mr-2" />
+                  <Play className="w-5 h-5 mr-2" />
                   Start {selectedMode === 'sample' ? 'Sample' : 'Comprehensive'} Experiment
                 </>
               )}
@@ -131,7 +131,7 @@ export const ExperimentManager: React.FC = () => {
               <RefreshCw className="w-4 h-4" />
             </button>
           </div>
-          
+
           <div className="space-y-2 max-h-64 overflow-y-auto">
             {Object.entries(jobs).length === 0 ? (
               <p className="text-gray-500 text-center py-4">No experiments started yet</p>

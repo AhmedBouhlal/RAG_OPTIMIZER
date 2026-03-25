@@ -27,7 +27,7 @@ hf_token.json
 
 # Cache / outputs
 cache/
-results/
+
 RAG_Logic/hf_token.json
 # Logs
 *.log

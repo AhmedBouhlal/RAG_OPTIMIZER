@@ -10,6 +10,7 @@ A comprehensive Retrieval-Augmented Generation (RAG) system with automated optim
 - **Reranking**: BGE-based reranking for improved retrieval accuracy
 - **Multi-format Support**: PDF, DOCX, TXT, HTML, CSV, JSON documents
 - **GPU Acceleration**: CUDA support for enhanced performance
+- **Vector DB Persistence**: Automatic saving and loading of vector indexes
 
 ### Model Management
 - **Local Models**: Llama3, Llama2, Mistral, Mixtral, CodeLlama, Qwen
@@ -62,6 +63,7 @@ AUTO_RAG/
     │   └── experiment.py    # Experiment framework
     └── data/
         ├── documents/       # User documents
+        ├── DBVectorial/     # 🆕 Persistent vector database
         └── evaluation/      # Evaluation datasets
 ```
 
@@ -167,6 +169,8 @@ The web interface will be available at `http://localhost:3000`
 - `POST /models/test` - Test model connection
 - `POST /config/llm` - Update LLM config
 - `POST /config/rag` - Update RAG config
+- `POST /config/save-index` - Force save vector index
+- `POST /config/load-best` - Load best configuration
 
 ### Experiments
 - `POST /experiments/start` - Start optimization
@@ -233,6 +237,7 @@ summary = runner.run_all_experiments(comprehensive=True)
 - **Batch Processing**: Efficient embedding generation
 - **Async Operations**: Non-blocking query processing
 - **GPU Acceleration**: CUDA support for faster processing
+- **Vector DB Persistence**: Automatic saving/loading of vector indexes
 
 ### Security & Production
 - **CORS Configuration**: Secure cross-origin requests
@@ -269,7 +274,7 @@ Typical improvements after automated optimization:
    ```bash
    # Check CUDA installation
    nvidia-smi
-   
+
    # Install CUDA PyTorch
    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
    ```
@@ -278,7 +283,7 @@ Typical improvements after automated optimization:
    ```bash
    # Check Ollama service
    ollama serve
-   
+
    # Test model availability
    ollama list
    ```
@@ -297,6 +302,7 @@ Typical improvements after automated optimization:
 - Backend logs: `RAG_Logic/logs/rag_system.log`
 - Frontend logs: Browser developer console
 - Experiment results: `RAG_Logic/results/`
+- Vector database: `RAG_Logic/data/DBVectorial/vector_index.pkl`
 
 ## 🤝 Contributing
 

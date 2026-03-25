@@ -347,6 +347,21 @@ async def get_best_experiment_config():
     except Exception as e:
         raise HTTPException(500, str(e))
 
+@app.post("/config/save-index")
+async def save_vector_index():
+    """Force save the current vector index to disk"""
+    try:
+        if not initialized:
+            raise HTTPException(500, "RAG system not initialized")
+
+        success = cli.rag_system.vector_db.force_save_index()
+        if success:
+            return {"message": "Vector index saved successfully"}
+        else:
+            raise HTTPException(500, "Failed to save vector index")
+    except Exception as e:
+        raise HTTPException(500, str(e))
+
 @app.post("/config/load-best")
 async def load_best_config():
     """Load the best experiment configuration into current settings"""

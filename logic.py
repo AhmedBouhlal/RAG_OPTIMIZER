@@ -6,6 +6,7 @@ Clean version without complex production features
 import sys
 import os
 import json
+import pickle
 import asyncio
 import logging
 from typing import Dict, List, Any, Optional
@@ -127,9 +128,10 @@ class OptimizedEmbeddingService:
         return cached_results + new_results
 
 class OptimizedVectorDatabase:
-    """Simplified vector database"""
+    """Simplified vector database with persistence"""
 
-    def __init__(self):
+    def __init__(self, persist_path: str = "RAG_Logic/data/DBVectorial/vector_index.pkl"):
+        self.persist_path = Path(persist_path)
         self.vectors = None
         self.chunk_ids = []
         self.chunks = []
@@ -153,7 +155,65 @@ class OptimizedVectorDatabase:
         self.chunks = chunks
         self._index_built = True
 
+        # Save index to disk
+        self.save_index()
+
         logger.info(f"Built vector index with {len(vectors)} embeddings")
+
+    def save_index(self) -> None:
+        """Save vector index to disk"""
+        if self._index_built:
+            try:
+                # Ensure directory exists
+                self.persist_path.parent.mkdir(parents=True, exist_ok=True)
+
+                index_data = {
+                    "vectors": self.vectors,
+                    "chunk_ids": self.chunk_ids,
+                    "chunks": self.chunks,
+                    "metadata": {
+                        "num_vectors": len(self.vectors),
+                        "vector_dim": self.vectors.shape[1] if len(self.vectors.shape) > 1 else None,
+                        "created_at": str(datetime.now())
+                    }
+                }
+
+                with open(self.persist_path, 'wb') as f:
+                    pickle.dump(index_data, f)
+
+                logger.info(f"Vector index saved to {self.persist_path}")
+
+            except Exception as e:
+                logger.error(f"Failed to save vector index: {e}")
+
+    def load_index(self) -> bool:
+        """Load vector index from disk"""
+        if not self.persist_path.exists():
+            logger.info(f"No existing vector index found at {self.persist_path}")
+            return False
+
+        try:
+            with open(self.persist_path, 'rb') as f:
+                index_data = pickle.load(f)
+
+            self.vectors = index_data["vectors"]
+            self.chunk_ids = index_data["chunk_ids"]
+            self.chunks = index_data["chunks"]
+            self._index_built = True
+
+            metadata = index_data.get("metadata", {})
+            logger.info(f"Loaded vector index: {metadata.get('num_vectors', 'unknown')} vectors, "
+                       f"dim: {metadata.get('vector_dim', 'unknown')}")
+
+            return True
+
+        except Exception as e:
+            logger.error(f"Failed to load vector index: {e}")
+            return False
+
+    def force_save_index(self) -> bool:
+        """Force save the current vector index to disk"""
+        return self.save_index()
 
     async def search(self, query_vector: np.ndarray, top_k: int = 5) -> List[Dict[str, Any]]:
         """Search vector index"""
@@ -324,24 +384,34 @@ class OptimizedRAGSystem:
                 }
                 logger.info("⚠️ Using default configuration")
 
-            # Chunk documents
-            chunks_result = chunk_documents({
-                "documents": self.documents,
-                "config": {
-                    "chunk_size": self.best_config["chunk_size"],
-                    "overlap": self.best_config["overlap"]
-                }
-            })
-            self.chunks = chunks_result["chunks"]
-            logger.info(f"✅ Created {len(self.chunks)} chunks")
+            # Try to load existing vector index first
+            if self.vector_db.load_index():
+                logger.info("✅ Loaded existing vector index from disk")
+                # Load chunks from the loaded index
+                self.chunks = self.vector_db.chunks
+                logger.info(f"✅ Using {len(self.chunks)} cached chunks")
+            else:
+                # No existing index, build from scratch
+                logger.info("🔨 No cached index found, building from scratch...")
 
-            # Generate embeddings
-            embeddings = await self.embedding_service.generate_embeddings(self.chunks)
-            logger.info(f"✅ Generated embeddings for {len(embeddings)} chunks")
+                # Chunk documents
+                chunks_result = chunk_documents({
+                    "documents": self.documents,
+                    "config": {
+                        "chunk_size": self.best_config["chunk_size"],
+                        "overlap": self.best_config["overlap"]
+                    }
+                })
+                self.chunks = chunks_result["chunks"]
+                logger.info(f"✅ Created {len(self.chunks)} chunks")
 
-            # Build vector index
-            self.vector_db.build_index(embeddings, self.chunks)
-            logger.info(f"✅ Built vector index")
+                # Generate embeddings
+                embeddings = await self.embedding_service.generate_embeddings(self.chunks)
+                logger.info(f"✅ Generated embeddings for {len(embeddings)} chunks")
+
+                # Build vector index
+                self.vector_db.build_index(embeddings, self.chunks)
+                logger.info(f"✅ Built and saved vector index")
 
             # Build BM25 index
             self.bm25_index = build_bm25_index({"chunks": self.chunks})

@@ -28,7 +28,7 @@ hf_token.json
 # Cache / outputs
 cache/
 results/
-hf_token.json
+RAG_Logic/hf_token.json
 # Logs
 *.log
-node_modules/
+frontend/node_modules/

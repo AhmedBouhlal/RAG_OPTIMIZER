@@ -6,10 +6,11 @@ import { DocumentManager } from './components/DocumentManager';
 import { EvaluationManager } from './components/EvaluationManager';
 import { Dashboard } from './components/Dashboard';
 import { ConnectionTest } from './components/ConnectionTest';
+import { LLMConfig } from './components/LLMConfig';
 import { QueryResponse } from './types';
-import { Search, BarChart3, FileText, FileJson, LayoutDashboard, Menu, X, Wifi } from 'lucide-react';
+import { Search, BarChart3, FileText, FileJson, LayoutDashboard, Menu, X, Wifi, Settings } from 'lucide-react';
 
-type TabType = 'query' | 'experiments' | 'documents' | 'evaluation' | 'dashboard' | 'connection';
+type TabType = 'query' | 'experiments' | 'documents' | 'evaluation' | 'dashboard' | 'connection' | 'llm-config';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('query');
@@ -22,6 +23,7 @@ const App: React.FC = () => {
     { id: 'documents' as TabType, label: 'Documents', icon: FileText, color: 'green' },
     { id: 'evaluation' as TabType, label: 'Evaluation', icon: FileJson, color: 'orange' },
     { id: 'dashboard' as TabType, label: 'Dashboard', icon: LayoutDashboard, color: 'indigo' },
+    { id: 'llm-config' as TabType, label: 'LLM Config', icon: Settings, color: 'red' },
     { id: 'connection' as TabType, label: 'Connection Test', icon: Wifi, color: 'gray' },
   ];
 
@@ -32,6 +34,7 @@ const App: React.FC = () => {
       green: 'text-green-600 hover:bg-green-50',
       orange: 'text-orange-600 hover:bg-orange-50',
       indigo: 'text-indigo-600 hover:bg-indigo-50',
+      red: 'text-red-600 hover:bg-red-50',
       gray: 'text-gray-600 hover:bg-gray-50',
     };
     return colors[color as keyof typeof colors] || colors.blue;
@@ -44,6 +47,7 @@ const App: React.FC = () => {
       green: 'bg-green-100 text-green-700 border-r-2 border-green-600',
       orange: 'bg-orange-100 text-orange-700 border-r-2 border-orange-600',
       indigo: 'bg-indigo-100 text-indigo-700 border-r-2 border-indigo-600',
+      red: 'bg-red-100 text-red-700 border-r-2 border-red-600',
       gray: 'bg-gray-100 text-gray-700 border-r-2 border-gray-600',
     };
     return colors[color as keyof typeof colors] || colors.blue;
@@ -117,6 +121,7 @@ const App: React.FC = () => {
             {activeTab === 'documents' && <DocumentManager />}
             {activeTab === 'evaluation' && <EvaluationManager />}
             {activeTab === 'dashboard' && <Dashboard />}
+            {activeTab === 'llm-config' && <LLMConfig />}
             {activeTab === 'connection' && <ConnectionTest />}
           </div>
         </main>

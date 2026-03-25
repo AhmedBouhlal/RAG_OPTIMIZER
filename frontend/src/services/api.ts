@@ -125,4 +125,40 @@ export const apiService = {
     const response = await api.delete(`/evaluation/${filename}`);
     return response.data;
   },
+
+  // LLM Configuration endpoints
+  async getAvailableModels(): Promise<string[]> {
+    const response = await api.get('/models/available');
+    return response.data;
+  },
+
+  async installModel(modelName: string): Promise<{ message: string }> {
+    const response = await api.post('/models/install', { model_name: modelName });
+    return response.data;
+  },
+
+  async testLLMConnection(config: any): Promise<{ message: string }> {
+    const response = await api.post('/models/test', config);
+    return response.data;
+  },
+
+  async updateLLMConfig(config: any): Promise<{ message: string }> {
+    const response = await api.post('/config/llm', config);
+    return response.data;
+  },
+
+  async updateRAGConfig(config: any): Promise<{ message: string }> {
+    const response = await api.post('/config/rag', config);
+    return response.data;
+  },
+
+  async getBestExperimentConfig(): Promise<any> {
+    const response = await api.get('/experiments/best-config');
+    return response.data;
+  },
+
+  async loadBestConfig(): Promise<{ message: string; llm_config: any; rag_config: any }> {
+    const response = await api.post('/config/load-best');
+    return response.data;
+  },
 };

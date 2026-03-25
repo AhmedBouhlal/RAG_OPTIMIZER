@@ -4,15 +4,25 @@ import os
 import json
 from pathlib import Path
 from fastapi import FastAPI, BackgroundTasks, HTTPException, UploadFile, File
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Dict, Any
 
 # Import your systems
-from your_cli_file import OptimizedRAGCLI
-from your_experiment_file import ComprehensiveRAGExperimentRunner
+from cli_optimized import OptimizedRAGCLI
+from run_experiments_comprehensive import ComprehensiveRAGExperimentRunner
 from utils import performance_metrics
 
 app = FastAPI(title="Unified RAG + Experiment API", version="1.1")
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # ---------------------------
 # GLOBAL SYSTEMS

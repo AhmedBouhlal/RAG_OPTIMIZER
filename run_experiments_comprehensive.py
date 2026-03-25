@@ -119,16 +119,20 @@ class ComprehensiveRAGExperimentRunner:
         """Generate all parameter combinations to test"""
 
         # Define parameter ranges
-        chunk_sizes = [200, 300, 400, 500]
-        overlaps = [0, 25, 50, 75]
-        top_ks = [3, 5, 7, 10]
-        vector_weights = [0.3, 0.4, 0.5, 0.6, 0.7]
-        keyword_weights = [0.3, 0.4, 0.5, 0.6, 0.7]
+        chunk_sizes = [300, 400]
+        overlaps = [25, 50]
+
+        top_ks = [5, 8]
+
+        vector_weights = [0.5, 0.7]
+        keyword_weights = [0.3, 0.5]   # Don't mirror vector weights blindly
+
         embedding_models = [
             "sentence-transformers/all-MiniLM-L6-v2",
             "sentence-transformers/all-MiniLM-L12-v2"
         ]
-        rerank_top_ks = [8, 10, 12, 15]
+
+        rerank_top_ks = [8, 10]
 
         # Generate all combinations
         combinations = []
@@ -275,9 +279,12 @@ class ComprehensiveRAGExperimentRunner:
             retrievals = []
 
             for gt in self.ground_truths:
+                # Handle both "query" and "question" field names
+                query_text = gt.get("query", gt.get("question", ""))
+
                 # Hybrid retrieval
                 retrieval_result = hybrid_retrieve({
-                    "query": gt["query"],
+                    "query": query_text,
                     "config": config,
                     "index": index_dict["index"],
                     "chunks": index_dict["chunks"],
@@ -286,10 +293,10 @@ class ComprehensiveRAGExperimentRunner:
 
                 # Rerank results
                 candidate_chunks = retrieval_result.get("results", [])[:config["rerank_top_k"]]
-                reranked = reranker.rerank(gt["query"], candidate_chunks, top_k=config["top_k"])
+                reranked = reranker.rerank(query_text, candidate_chunks, top_k=config["top_k"])
 
                 retrieval = {
-                    "query": gt["query"],
+                    "query": query_text,
                     "results": reranked
                 }
                 retrievals.append(retrieval)

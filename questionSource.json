@@ -1,0 +1,137 @@
+[
+    {
+        "document": "file1.pdf",
+        "qa_pairs": [
+            {
+                "question": "What is the main objective of the Tesla Optimus humanoid robot project?",
+                "answer": "The Tesla Optimus project aims to develop a humanoid robot capable of performing repetitive, dangerous, or labor-intensive tasks using advanced mechatronic systems and artificial intelligence."
+            },
+            {
+                "question": "Why is the Tesla Optimus robot considered a mechatronic system?",
+                "answer": "Because it integrates mechanical components, electronics, sensors, actuators, and digital control systems to perform coordinated physical actions."
+            },
+            {
+                "question": "What role do actuators play in the Tesla Optimus robot?",
+                "answer": "Actuators convert electrical signals into physical motion, enabling the robot to move its joints and perform tasks."
+            },
+            {
+                "question": "Why are sensors critical in humanoid robotic systems like Tesla Optimus?",
+                "answer": "Sensors provide information about the robot’s environment and internal state, allowing it to perceive surroundings, maintain balance, and interact with objects."
+            },
+            {
+                "question": "What types of sensors are typically used in humanoid robots?",
+                "answer": "Humanoid robots commonly use vision sensors, force sensors, proximity sensors, and inertial measurement units to understand and interact with their environment."
+            },
+            {
+                "question": "What is the function of digital control systems in a humanoid robot?",
+                "answer": "Digital control systems process sensor data and send commands to actuators to coordinate movement and behavior."
+            },
+            {
+                "question": "How does system integration affect the performance of humanoid robots?",
+                "answer": "System integration ensures that mechanical, electronic, and software components work together efficiently to produce coordinated and stable robotic behavior."
+            },
+            {
+                "question": "What engineering disciplines are involved in developing humanoid robots like Optimus?",
+                "answer": "The development involves mechanical engineering, electrical engineering, computer science, robotics, and artificial intelligence."
+            },
+            {
+                "question": "Why are humanoid robots designed with human-like structures?",
+                "answer": "Human-like structures allow robots to operate in environments designed for humans and use tools and infrastructure already built for human use."
+            },
+            {
+                "question": "What challenges are associated with designing humanoid robotic systems?",
+                "answer": "Challenges include maintaining balance, coordinating multiple joints, ensuring efficient power consumption, and integrating perception and control systems."
+            }
+        ]
+    },
+    {
+        "document": "file2.pdf",
+        "qa_pairs": [
+            {
+                "question": "What is meant by the term 'Physical AI'?",
+                "answer": "Physical AI refers to artificial intelligence systems that operate in the physical world through embodied agents such as robots that perceive, reason, and act."
+            },
+            {
+                "question": "Why has humanoid robotics gained renewed attention in recent years?",
+                "answer": "Advances in AI models, sensors, computing hardware, and batteries have made it possible to build more capable and practical humanoid robots."
+            },
+            {
+                "question": "How can humanoid robots contribute to industrial transformation?",
+                "answer": "Humanoid robots can automate physical labor, improve productivity, and address workforce shortages across industries."
+            },
+            {
+                "question": "What is embodied intelligence in robotics?",
+                "answer": "Embodied intelligence refers to intelligence that emerges from the interaction between a robot’s physical body, sensors, and its environment."
+            },
+            {
+                "question": "What role do hardware-software integration strategies play in robotics development?",
+                "answer": "Hardware-software integration ensures that robotic hardware, sensors, and AI algorithms work together efficiently to enable intelligent physical actions."
+            },
+            {
+                "question": "Why are large AI models important for humanoid robots?",
+                "answer": "Large AI models enable robots to understand complex environments, interpret instructions, and perform more general tasks."
+            },
+            {
+                "question": "What technological components are necessary to support Physical AI systems?",
+                "answer": "Key components include AI chips, advanced sensors, robotic hardware, control algorithms, and machine learning models."
+            },
+            {
+                "question": "What is the significance of hierarchical control policies in robotics?",
+                "answer": "Hierarchical control allows robots to manage complex behaviors by breaking tasks into smaller, structured levels of decision making."
+            },
+            {
+                "question": "How do the United States and China differ in their robotics strategies?",
+                "answer": "The United States focuses heavily on integrated AI and software ecosystems, while China emphasizes large-scale manufacturing and hardware deployment."
+            },
+            {
+                "question": "What potential impact could humanoid robots have on future business models?",
+                "answer": "Humanoid robots could transform business operations by automating physical tasks, improving productivity, and creating new service and industrial applications."
+            }
+        ]
+    },
+    {
+        "document": "file3.pdf",
+        "qa_pairs": [
+            {
+                "question": "According to Elon Musk, how could the Optimus robot impact civilization?",
+                "answer": "Elon Musk claims that the Optimus robot could fundamentally transform civilization by dramatically increasing productivity and automation."
+            },
+            {
+                "question": "What major economic problem could the Optimus robot help address?",
+                "answer": "The robot could help address global labor shortages by performing tasks that currently require human workers."
+            },
+            {
+                "question": "What was demonstrated during Tesla's AI Day regarding the Optimus robot?",
+                "answer": "Tesla presented prototypes of Optimus, including one that walked on stage and another that demonstrated movement capabilities while supported."
+            },
+            {
+                "question": "What is the prototype named 'Bumble C'?",
+                "answer": "Bumble C is an early prototype version of the Optimus robot shown walking on stage during Tesla AI Day."
+            },
+            {
+                "question": "What approximate price did Elon Musk suggest for the Optimus robot in mass production?",
+                "answer": "Musk suggested the robot might cost less than $20,000 if produced at scale."
+            },
+            {
+                "question": "What physical characteristics are expected for the Optimus robot?",
+                "answer": "Optimus is expected to be about the size and weight of a human, roughly five feet eight inches tall and around 125 pounds."
+            },
+            {
+                "question": "How could Tesla’s autonomous driving technology contribute to Optimus?",
+                "answer": "Technology from Tesla’s Full Self Driving system could help the robot navigate and understand environments."
+            },
+            {
+                "question": "What kinds of tasks might Optimus perform in the future?",
+                "answer": "Optimus could perform tasks such as moving objects, picking up items, doing household chores, or assisting in industrial work."
+            },
+            {
+                "question": "Why might industries adopt humanoid robots like Optimus?",
+                "answer": "Industries may adopt them to perform repetitive, dangerous, or undesirable tasks while improving efficiency and safety."
+            },
+            {
+                "question": "What long-term vision does Musk describe for the Optimus robot?",
+                "answer": "Musk envisions a future where robots handle dangerous or repetitive labor, allowing humans to focus on creative and meaningful activities."
+            }
+        ]
+    }
+]

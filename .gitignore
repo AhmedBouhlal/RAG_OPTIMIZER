@@ -28,6 +28,6 @@ hf_token.json
 # Cache / outputs
 cache/
 results/
-
+hf_token.json
 # Logs
 *.log
